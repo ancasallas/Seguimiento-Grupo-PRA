@@ -7,10 +7,9 @@
 
   <link rel="stylesheet" href="juridico.css" />
 
-  <!-- Librerías para leer Excel y dibujar el gráfico -->
+  <!-- Librerías -->
   <script defer src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-
   <script defer src="juridico.js"></script>
 </head>
 <body>
@@ -27,7 +26,7 @@
     </div>
 
     <div class="container">
-      <!-- Botón de regreso y acción -->
+      <!-- Acciones -->
       <nav class="nav-actions">
         <a class="btn" href="index.html">← Volver</a>
         <a class="btn solid" href="./Base de datos Grupo PRA.xlsx" target="_blank" download>Descargar Excel</a>
@@ -40,20 +39,30 @@
         </div>
         <div class="group-chips" id="chips"></div>
       </div>
+    </div>
+  </header>
 
-      <!-- Analítica: gráfico a la izquierda -->
-      <section class="analytics-row">
+  <main class="container main-content">
+    <!-- Analítica (fuera del header para evitar traslapes) -->
+    <section class="analytics-row">
+      <div class="analytics-left">
         <div class="chart-card small">
           <h3>Distribución por Subsector</h3>
           <canvas id="subsectorChart"></canvas>
         </div>
-        <div class="analytics-spacer"></div>
-      </section>
-    </div>
-  </header>
+        <div class="chart-card small">
+          <h3>Por Estado</h3>
+          <canvas id="estadoChart"></canvas>
+        </div>
+      </div>
 
-  <main class="container">
-    <!-- Vista previa Excel (full width) -->
+      <div class="chart-card big">
+        <h3>Por Entidad</h3>
+        <canvas id="entityChart"></canvas>
+      </div>
+    </section>
+
+    <!-- Vista previa Excel -->
     <section class="preview-card wide">
       <div class="preview-head">
         <h3 class="preview-title">Vista previa del Excel</h3>
@@ -72,6 +81,11 @@
   <footer class="container footer"><small>OAAS · MME</small></footer>
 </body>
 </html>
+
+
+
+
+
 
 
 

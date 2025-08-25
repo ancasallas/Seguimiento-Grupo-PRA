@@ -6,19 +6,35 @@
 
 *{ box-sizing:border-box }
 html,body{ margin:0; padding:0 }
-body{ font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; color:var(--ink); background:var(--bg); line-height:1.6 }
+body{
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color:var(--ink); background:var(--bg); line-height:1.6;
+}
 .container{ width:min(1200px,92%); margin:0 auto }
 
-.site-header{ position:sticky; top:0; z-index:10; backdrop-filter:blur(8px); background:rgba(255,255,255,.75); border-bottom:1px solid var(--border); padding:8px 0 }
+/* Header sticky solo con barra superior y filtros */
+.site-header{
+  position:sticky; top:0; z-index:20;
+  backdrop-filter:blur(8px);
+  background:rgba(255,255,255,.85);
+  border-bottom:1px solid var(--border);
+  padding:8px 0;
+}
 .header-flex{ display:flex; align-items:center; gap:1rem; padding:10px 0 }
 .logo{ height:150px }
 .title{ flex:1; text-align:center; font-size:2rem; font-weight:900; color:var(--accent); margin:0 }
-.fecha-actualizacion{ display:flex; flex-direction:column; align-items:center; background:#f43f5e; border-radius:.5rem; width:76px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,.15) }
-.fecha-mes{ background:#ef4444; color:#fff; font-weight:800; text-transform:uppercase; font-size:.9rem; width:100%; text-align:center; padding:4px 0; letter-spacing:.5px }
+.fecha-actualizacion{
+  display:flex; flex-direction:column; align-items:center; background:#f43f5e;
+  border-radius:.5rem; width:76px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,.15)
+}
+.fecha-mes{ background:#ef4444; color:#fff; font-weight:800; text-transform:uppercase;
+  font-size:.9rem; width:100%; text-align:center; padding:4px 0; letter-spacing:.5px }
 .fecha-dia{ background:#fff; color:#1f2937; font-size:1.5rem; font-weight:800; padding:8px 0; width:100%; text-align:center }
 
 .nav-actions{ display:flex; gap:.75rem; justify-content:center; padding:10px 0 14px }
-.btn{ padding:.85rem 1.2rem; border-radius:999px; border:1px solid var(--border); background:var(--card); color:var(--ink); font-weight:700; cursor:pointer; text-decoration:none; box-shadow:0 1px 2px rgba(0,0,0,.04) }
+.btn{ padding:.85rem 1.2rem; border-radius:999px; border:1px solid var(--border);
+  background:var(--card); color:var(--ink); font-weight:700; cursor:pointer; text-decoration:none;
+  box-shadow:0 1px 2px rgba(0,0,0,.04) }
 .btn:hover{ filter:brightness(1.03) }
 .btn.solid{ background:var(--brand); color:#fff; border-color:transparent }
 .btn.ghost{ background:#fff; color:var(--ink) }
@@ -30,13 +46,50 @@ body{ font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; color:var(--
 .chip{ background:#ecfeff; color:#155e75; border:1px solid #a5f3fc; padding:.45rem .7rem; border-radius:999px; font-size:.9rem; cursor:pointer }
 .chip.is-active{ background:rgba(20,83,45,.12); color:#14532d; border-color:#14532d }
 
-.analytics-row{ display:grid; grid-template-columns:320px 1fr; gap:16px; align-items:start; margin-bottom:8px }
-.chart-card{ background:var(--card); border:1px solid var(--border); border-radius:1rem; padding:10px; max-width:300px; width:100% }
+/* Espacio bajo el header sticky para que no tape el main al entrar */
+.main-content{ padding-top:12px }
+
+/* ===== Analítica (en el main) ===== */
+.analytics-row{
+  display:grid;
+  grid-template-columns:360px 1fr;   /* izquierda fija, derecha flexible */
+  gap:16px;
+  align-items:start;
+  margin-bottom:8px;
+}
+
+.analytics-left{
+  display:flex; flex-direction:column; gap:16px;
+}
+
+.chart-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:1rem;
+  padding:14px;
+}
 .chart-card h3{ margin:4px 0 8px; font-size:1rem }
-/* Fuerza tamaño del pastel */
+.chart-card.small{ max-width:100% }
+
+/* Pastel fijo */
 .chart-card canvas#subsectorChart{ width:280px!important; height:280px!important }
 
-.preview-card{ background:var(--card); border:1px solid var(--border); border-radius:1rem; padding:10px; margin-top:10px }
+/* Estado (horizontal) */
+.chart-card.small canvas#estadoChart{
+  width:100%!important; height:170px!important; max-height:180px!important;
+}
+
+/* Entidad (horizontal máx 300px) */
+.chart-card.big{
+  max-height:300px;
+  display:flex; flex-direction:column;
+}
+.chart-card.big canvas{
+  flex:1; height:300px !important; max-height:300px !important; width:100% !important;
+}
+
+/* Vista previa */
+.preview-card{ background:var(--card); border:1px solid var(--border); border-radius:1rem; padding:10px; margin:16px 0 }
 .preview-head{ display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:8px }
 .preview-title{ margin:0; font-size:1rem }
 .preview-actions{ display:flex; gap:.5rem; flex-wrap:wrap }
@@ -44,20 +97,25 @@ body{ font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; color:var(--
 .preview:not(.collapsed){ max-height:60vh }
 .preview-content{ overflow:auto; max-height:55vh; padding-top:8px }
 
+/* Tabla */
 .table{ width:100%; border-collapse:collapse }
 .table th,.table td{ border:1px solid var(--border); padding:.45rem .55rem; font-size:.92rem; text-align:left }
 .table thead th{ background:#f1f5f9 }
 
+/* Panel y footer */
 .panel{ background:var(--card); border:1px solid var(--border); border-radius:1rem; padding:1rem; margin:18px 0 28px; min-height:18vh }
 .muted{ color:var(--muted) }
-
 .footer{ padding:10px 0 30px; color:var(--muted); text-align:center }
 
+/* Responsive */
 @media (max-width:900px){
-  .analytics-row{ grid-template-columns:1fr }
-  .chart-card{ max-width:100% }
+  .analytics-row{ grid-template-columns:1fr; }
   .chart-card canvas#subsectorChart{ width:100%!important; height:auto!important }
 }
+
+
+
+
 
 
 

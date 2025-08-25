@@ -9,10 +9,14 @@ const TOGGLE_PREVIEW  = document.getElementById("toggle-preview");
 const PREVIEW         = document.getElementById("preview");
 const PREVIEW_CONTENT = document.getElementById("preview-content");
 
+// Charts
+let subsectorChart = null;
+let entityChart = null;
+let estadoChart = null;
+
 // Estado
 let ALL_ROWS = [];
-let KEYS = { grupoKey:null, subsectorKey:null };
-let subsectorChart = null;
+let KEYS = { grupoKey:null, subsectorKey:null, entidadKey:null, estadoKey:null };
 
 /* Utilitarios UI */
 function showMessage(msg){ PANEL.innerHTML = `<p class="muted">${msg}</p>`; }
@@ -112,12 +116,17 @@ function applyGroupFilter(value){
     ? ALL_ROWS
     : ALL_ROWS.filter(r => String(r[KEYS.grupoKey] ?? "").trim() === value);
 
+  // Render de las 3 gráficas con el subconjunto filtrado
   renderSubsectorChart(filtered);
+  renderEstadoChart(filtered);
+  renderEntityChart(filtered);
+
+  // Vista previa de tabla
   PREVIEW_CONTENT.innerHTML = "";
   PREVIEW_CONTENT.appendChild(buildTable(filtered));
 }
 
-/* Gráfico pastel */
+/* ===== Gráficas ===== */
 function renderSubsectorChart(rows){
   if(!rows.length || !KEYS.subsectorKey) return;
   const data = countsByKey(rows, KEYS.subsectorKey);
@@ -134,9 +143,65 @@ function renderSubsectorChart(rows){
     },
     options: {
       responsive:true,
-      maintainAspectRatio:true,   // respeta 280x280 del CSS
+      maintainAspectRatio:true,
       plugins:{ legend:{ position:"bottom" } },
       cutout:"55%"
+    }
+  });
+}
+
+function renderEstadoChart(rows){
+  const key = KEYS.estadoKey;
+  if(!rows.length || !key) return;
+  const data = countsByKey(rows, key).slice(0,8);
+  const ctx = document.getElementById("estadoChart").getContext("2d");
+  if(estadoChart) estadoChart.destroy();
+  estadoChart = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: data.map(d=>d[0]),
+      datasets: [{
+        label: "Registros",
+        data: data.map(d=>d[1])
+      }]
+    },
+    options: {
+      indexAxis:"y",
+      responsive:true,
+      maintainAspectRatio:false,
+      scales:{
+        x:{ beginAtZero:true, precision:0 },
+        y:{ ticks:{ autoSkip:true } }
+      },
+      plugins:{ legend:{ display:false } }
+    }
+  });
+}
+
+function renderEntityChart(rows){
+  const key = KEYS.entidadKey;
+  if(!rows.length || !key) return;
+  const data = countsByKey(rows, key).slice(0,12);
+  const ctx = document.getElementById("entityChart").getContext("2d");
+  if(entityChart) entityChart.destroy();
+  entityChart = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: data.map(d=>d[0]),
+      datasets: [{
+        label: "Registros",
+        data: data.map(d=>d[1]),
+        backgroundColor:"#3b82f6"
+      }]
+    },
+    options: {
+      indexAxis:"y",
+      responsive:true,
+      maintainAspectRatio:false,   // respeta 300px del CSS
+      scales:{
+        x:{ beginAtZero:true, precision:0 }
+      },
+      plugins:{ legend:{ display:false } }
     }
   });
 }
@@ -147,7 +212,7 @@ TOGGLE_PREVIEW?.addEventListener("click", ()=>{
   PREVIEW.setAttribute("aria-expanded", String(!collapsed));
 });
 
-/* Inicio: cargar Excel y preparar UI */
+/* Inicio */
 (async function init(){
   showMessage("Cargando Excel local…");
   try{
@@ -157,32 +222,26 @@ TOGGLE_PREVIEW?.addEventListener("click", ()=>{
     const headers = Object.keys(ALL_ROWS[0]);
     KEYS.grupoKey     = findColFlexible(headers, ["grupo","grupos"]);
     KEYS.subsectorKey = findColFlexible(headers, ["subsector","sub sector","sector"]);
+    KEYS.entidadKey   = findColFlexible(headers, ["entidad","entidades","institucion","institución","organismo"]);
+    KEYS.estadoKey    = findColFlexible(headers, ["estado","estatus","situacion","situación"]);
 
-    if(!KEYS.subsectorKey){
-      showMessage("No se encontró la columna ‘subsector’ en el Excel.");
-      return;
-    }
+    if(!KEYS.subsectorKey){ showMessage("No se encontró la columna ‘subsector’ en el Excel."); return; }
 
-    // chips
     const groups = new Set();
     if(KEYS.grupoKey){
       ALL_ROWS.forEach(r=>{
         const v = String(r[KEYS.grupoKey] ?? "").trim();
+
         if(v) groups.add(v);
       });
     }
-    renderGroupChips([...groups].sort((a,b)=>a.localeCompare(b,"es")));
 
-    // render inicial
-    applyGroupFilter("Todos");
-    showMessage("");
-  }catch(e){
-    console.error(e);
-    showMessage("No fue posible leer el Excel. Abre con Live Server.");
+    renderGroupChips(groups);
+  }catch(err){
+    console.error(err);
+    showMessage("Error al cargar el Excel.");
   }
 })();
-
-
 
 
 
