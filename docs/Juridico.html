@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Jurídica – OAAS MME</title>
+
+  <link rel="stylesheet" href="juridico.css" />
+
+  <!-- Librerías para leer Excel y dibujar el gráfico -->
+  <script defer src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <script defer src="juridico.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-flex">
+      <a href="index.html" class="logo-link" title="Volver al inicio">
+        <img src="LOGO-MINENERGÍA-GRIS.png" alt="Logo Minenergía" class="logo" />
+      </a>
+      <h1 class="title">Jurídica</h1>
+      <div class="fecha-actualizacion" aria-label="Fecha de actualización">
+        <div class="fecha-mes">JUNIO</div>
+        <div class="fecha-dia">20</div>
+      </div>
+    </div>
+
+    <div class="container">
+      <!-- Botón de regreso y acción -->
+      <nav class="nav-actions">
+        <a class="btn" href="index.html">← Volver</a>
+        <a class="btn solid" href="./Base de datos Grupo PRA.xlsx" target="_blank" download>Descargar Excel</a>
+      </nav>
+
+      <!-- Filtros por grupo -->
+      <div id="filtros" class="filters" hidden>
+        <div class="filters-head">
+          <h3 class="filters-title">Filtrar por grupo</h3>
+        </div>
+        <div class="group-chips" id="chips"></div>
+      </div>
+
+      <!-- Analítica: gráfico a la izquierda -->
+      <section class="analytics-row">
+        <div class="chart-card small">
+          <h3>Distribución por Subsector</h3>
+          <canvas id="subsectorChart"></canvas>
+        </div>
+        <div class="analytics-spacer"></div>
+      </section>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Vista previa Excel (full width) -->
+    <section class="preview-card wide">
+      <div class="preview-head">
+        <h3 class="preview-title">Vista previa del Excel</h3>
+        <div class="preview-actions">
+          <button id="toggle-preview" class="btn ghost" type="button">Ver/ocultar vista previa</button>
+        </div>
+      </div>
+      <div id="preview" class="preview collapsed" aria-expanded="false">
+        <div id="preview-content" class="preview-content"></div>
+      </div>
+    </section>
+
+    <section id="panel" class="panel" aria-live="polite"></section>
+  </main>
+
+  <footer class="container footer"><small>OAAS · MME</small></footer>
+</body>
+</html>
+
+
+
+
+
+
+
+

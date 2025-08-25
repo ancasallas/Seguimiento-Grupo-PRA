@@ -1,0 +1,29 @@
+:root{
+  --ink:#0f172a; --muted:#64748b; --brand:#14532d;
+  --brand-ghost:rgba(20,83,45,.12); --bg:#f8fafc;
+  --card:#fff; --border:#e2e8f0; --accent:#ea580c;
+}
+
+*{ box-sizing:border-box }
+html,body{ margin:0; padding:0 }
+body{ font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; color:var(--ink); background:var(--bg); line-height:1.6; }
+.container{ width:min(1200px,92%); margin:0 auto }
+
+.site-header{ position:sticky; top:0; z-index:10; backdrop-filter:blur(8px); background:rgba(255,255,255,.75); border-bottom:1px solid var(--border); padding:8px 0 }
+.header-flex{ display:flex; align-items:center; gap:1rem; padding:10px 0 }
+.logo{ height:150px }
+.title{ flex:1; text-align:center; font-size:2.2rem; font-weight:900; color:var(--accent); line-height:1.3; margin:0 }
+.fecha-actualizacion{ display:flex; flex-direction:column; align-items:center; background:#f43f5e; border-radius:.5rem; width:76px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,.15) }
+.fecha-mes{ background:#ef4444; color:#fff; font-weight:800; text-transform:uppercase; font-size:.9rem; width:100%; text-align:center; padding:4px 0; letter-spacing:.5px }
+.fecha-dia{ background:#fff; color:#1f2937; font-size:1.5rem; font-weight:800; padding:8px 0; width:100%; text-align:center }
+
+.nav-actions{ display:flex; gap:.75rem; justify-content:center; padding:10px 0 14px }
+.btn{ padding:.95rem 1.3rem; border-radius:999px; border:1px solid var(--border); background:var(--card); color:var(--ink); font-weight:700; cursor:pointer; text-decoration:none; box-shadow:0 1px 2px rgba(0,0,0,.04) }
+.btn:hover{ filter:brightness(1.03) }
+.btn.is-disabled{ opacity:.55; cursor:not-allowed }
+.btn.is-active{ background:var(--brand-ghost); color:var(--brand); border-color:var(--brand) }
+.btn.solid{ background:var(--brand); color:#fff; border-color:transparent }
+
+.panel{ background:var(--card); border:1px solid var(--border); border-radius:1rem; padding:1rem; margin:18px 0 28px; min-height:18vh }
+.muted{ color:var(--muted) }
+.footer{ padding:10px 0 30px; color:var(--muted); text-align:center }
